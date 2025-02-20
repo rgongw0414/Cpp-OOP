@@ -7,7 +7,7 @@
   Base* base_ptr = dynamic_cast<Base*>(derived_ptr);  // upcasting
   ```
   * Manage the interface in a top-down (Base-Derived) manner, so that we can modify the code from Base, which enables minimun modification
-  * 'override'keyword: check the derived functions are consistent with the interface in Base class, if not, raise error in compile-time
+  * 'override' keyword: check the derived functions are consistent with the interface in Base class, if not, raise error in compile-time
   ``` c++
   class Base {
   public:
