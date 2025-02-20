@@ -43,7 +43,7 @@ public:
         // override is to ensure that the function is intended to override a virtual function in the base class.
         // Also, if the interface of the base class' functions is not consistent with the derived class, the compiler will generate an error.
         // This helps to catch errors at compile time rather than runtime.
-        // For further information, refer to the override/override.cpp file.
+        // For further information, refer to the override.cpp file.
         cout << "I am a student, my name is " << this->getName() << endl;
     }
 
