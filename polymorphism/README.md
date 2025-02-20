@@ -12,11 +12,13 @@
   class Base {
   public:
       virtual void func1(const string str) { cout << str << endl; }
-  }
+      // ...
+  };
 
   class Derived : public Base {
       // Since 'override' is used, this would generate error during compilation, because it is not consistent with Base::func1(const string str)
       // void func1(const char* str) override { cout << "overrided func1 of Derived: " << str << endl; }
       void func1(const string str) override { cout << "overrided func1 of Derived: " << str << endl; }
-  }
+      // ...
+  };
   ```
