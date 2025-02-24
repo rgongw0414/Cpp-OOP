@@ -44,6 +44,10 @@
   * Given an abstract class: Base, if the pure virtual function is not overriden in derived classes, the derived classes would become abstract, making it cannot be used to instantiate objects (except for virtual destructor, because the compiler generates a default destructor).
   * [binding/v_desturctor.cpp](binding/v_desturctor.cpp)
   * [binding/not_overriding_vFunc.cpp](binding/not_overriding_vFunc.cpp)
+* Refs
+  * [C++中關於 virtual 的兩三事](https://medium.com/theskyisblue/c-中關於-virtual-的兩三事-1b4e2a2dc373)
+  * [Why a pure virtual destructor needs an implementation](https://stackoverflow.com/questions/21109417/why-a-pure-virtual-destructor-needs-an-implementation)
+
 ### Virtual Table (vtable)
 * One of the most common methods to achieve polymorphism
 * __vptr is a hidden member
@@ -91,3 +95,6 @@ struct D1_vptr {
 ```
 * For d1_basePtr, it is a Derived obj being viewed as Base
 * Derived is derived from Base, so __vptr can still access the right functions
+* Refs
+  * [C++ 內部如何實現多型](https://npes87184.github.io/2019-06-08-how-c++-achieve-polymorphism-internally/)
+  * [a helper variable for virtual table in c++](https://stackoverflow.com/questions/18246016/void-vt-void-ptr-a-helper-variable-for-virtual-table-in-c)
