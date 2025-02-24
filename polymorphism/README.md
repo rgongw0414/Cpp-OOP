@@ -22,3 +22,15 @@
       // ...
   };
   ```
+### Virtual Functions
+* Abstract Class
+  * At least one pure virtual function delared in class
+* Pure Virtual Function
+  * Force the derived classes to override the implementation of the pure virtual functions
+  * Inherit
+* Virtual Destructor
+  * Non-virtual destructor makes the destructor of the derived class not called, resulting in incomplete destruction.
+* Overriding Virtual Functions
+  * Given an abstract class: Base, if the pure virtual function is not overriden in derived classes, the derived classes would become abstract, making it cannot be used to instantiate objects (except for virtual destructor, because the compiler generates a default destructor).
+  * binding/v_desturctor.cpp
+  * binding/not_overriding_vFunc.cpp
