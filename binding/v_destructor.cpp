@@ -6,6 +6,10 @@ public:
         std::cout << "Base class constructor" << std::endl;
     }
     virtual ~Base() = 0; // Pure virtual destructor
+
+    // ~Base(); // non-virtual destructor, which makes the destructor of the derived class not called.
+    // By the statement: Base* basePtr = new Derived(); though use Base as the interface for Derived class, 
+    // the destructor of the derived class is not called, which makes the interface incomplete.
 };
 
 Base::~Base() {
