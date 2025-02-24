@@ -50,10 +50,20 @@
 
 ### Virtual Table (vtable)
 * One of the most common methods to achieve polymorphism
+* In many C++ implementations, the virtual table pointer is the first sizeof(void (**)()) bytes (4 or 8) of the object
+* When dereferencing the vtable pointer, you get the starting address of the virtual table: __vptr
+  * *vtable_ptr -> __vptr
 * __vptr is a hidden member
   *  An pointer pointing to function pointers (virtual functions)
-  *  An array of function pointers
-  *  typedef void(*FuncPtr)();
+  *  vtable __vptr is an array of function pointers, which is of type `void (*[])()`
+     *  Each entry is of type `void (*)()` (function pointer)
+     *  So we can do a little trick to access __vptr, which is by explicitly convert the obj address to `void (***)()` (a ptr to ptr to function ptrs) manually, then dereference it to get the ptr to function ptrs (array of ptrs).
+     ``` cpp
+     Derived derivedObj;
+     Base* base_ptr = &derivedObj;
+     void (**vtable)() = *reinterpret_cast<void (***)()> (&derivedObj);
+     vtable[0](); // access the first virtual function
+     ```
 * Ecah objects has their own vtables, if there is at least one virtual function in the class
   * [binding/v_table.cpp](binding/v_table.cpp)
 * Given class Base and Derived:
@@ -95,7 +105,7 @@ struct D1_vptr {
 ```
 * For d1_basePtr, it is a Derived obj being viewed as Base
 * Derived is derived from Base, so __vptr can still access the right functions
-* Refs
+* Refs:
   * [C++ 內部如何實現多型](https://npes87184.github.io/2019-06-08-how-c++-achieve-polymorphism-internally/)
   * [stack overflow: A helper variable for virtual table in c++](https://stackoverflow.com/questions/18246016/void-vt-void-ptr-a-helper-variable-for-virtual-table-in-c)
   * [Code Project: Displaying vtable when debugging](https://www.codeproject.com/Tips/90875/Displaying-vtable-when-debugging)
