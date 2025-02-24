@@ -1,5 +1,5 @@
 # .vscode
-test.cpp
+test*.cpp
 
 # Prerequisites
 *.d
