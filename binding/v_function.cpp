@@ -18,9 +18,7 @@ public:
 
 int Shape::nextID = 1;
 
-
 class Rectangle: public Shape {
-
     void draw() const override {
         std::cout << "Drawing Rectangle" << std::endl;
     }
@@ -31,14 +29,14 @@ class Rectangle: public Shape {
 };
 
 class Ellipse: public Shape {
-
     void draw() const override {
         std::cout << "Drawing Ellipse" << std::endl;
     }
 
-    void error(const std::string& msg) override {
-        std::cerr << "Ellipse Error: " << msg << std::endl;
-    }
+    // not overriding the error function, so the base class function will be called.
+    // void error(const std::string& msg) override {
+    //     std::cerr << "Ellipse Error: " << msg << std::endl;
+    // }
 };
 
 int main() {
@@ -49,7 +47,7 @@ int main() {
     for (int i = 0; i < 2; i++) {
         std::cout << "Object ID: " << shapes[i]->getObjectID() << std::endl;
         shapes[i]->draw();
-        // shapes[i]->error("Error");
+        shapes[i]->error("My Error");
     }
 
     for (int i = 0; i < 2; i++) {
