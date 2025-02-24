@@ -27,7 +27,16 @@
   * At least one pure virtual function delared in class
 * Pure Virtual Function
   * Force the derived classes to override the implementation of the pure virtual functions
-  * Inherit
+  * Message: For this function, only the interface is inherited. The implementation is left to be overriden in derived classes.
+* (Simple/Normal) Virtual Function
+  * Message: For this function, both the interface and the implementation are inherited, the derived classes can choose to either override it, or not to.
+  * If not overriden, the function inherited from Base will be called.
+* Non-virtual Function
+  * Message: Inherit the interface, and keep the implementation untouched (no overriding)
+  * Resolved in compile-time (static binding)
+  * Overriding them in the derived class does not achieve polymorphic behavior
+    * Upon calling the same function with a Derived object and a Base object, the output is the same, i.e., this is not polymorphic behavior.
+    * binding/non_v_func.cpp
 * Virtual Destructor
   * Non-virtual destructor makes the destructor of the derived class not called, resulting in incomplete destruction.
 * Overriding Virtual Functions
