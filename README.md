@@ -97,4 +97,6 @@ struct D1_vptr {
 * Derived is derived from Base, so __vptr can still access the right functions
 * Refs
   * [C++ 內部如何實現多型](https://npes87184.github.io/2019-06-08-how-c++-achieve-polymorphism-internally/)
-  * [a helper variable for virtual table in c++](https://stackoverflow.com/questions/18246016/void-vt-void-ptr-a-helper-variable-for-virtual-table-in-c)
+  * [stack overflow: A helper variable for virtual table in c++](https://stackoverflow.com/questions/18246016/void-vt-void-ptr-a-helper-variable-for-virtual-table-in-c)
+  * [Code Project: Displaying vtable when debugging](https://www.codeproject.com/Tips/90875/Displaying-vtable-when-debugging)
+  * [Learn C++: 25.6 — The virtual table](https://www.learncpp.com/cpp-tutorial/the-virtual-table/)
