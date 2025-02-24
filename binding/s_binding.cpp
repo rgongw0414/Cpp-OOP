@@ -18,9 +18,6 @@ int main() {
     Base baseObj;
     Derived derivedObj;
 
-    baseObj.show();       // Calls Base::show() - Static Binding
-    derivedObj.show();    // Calls Derived::show() - Static Binding
-
     Base* basePtr = &derivedObj;
     basePtr->show();      // Calls Base::show() - Static Binding (Base pointer)
     

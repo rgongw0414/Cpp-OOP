@@ -2,15 +2,15 @@
 
 class Base {
 public:
-    void show() {
+    virtual void show() {
         std::cout << "Base class show function (static binding)" << std::endl;
     }
 };
 
 class Derived : public Base {
 public:
-    void show() {
-        std::cout << "Derived class show function (static binding)" << std::endl;
+    void show() override {
+        std::cout << "Derived class show function (dynamic binding)" << std::endl;
     }
 };
 
@@ -18,11 +18,8 @@ int main() {
     Base baseObj;
     Derived derivedObj;
 
-    baseObj.show();       // Calls Base::show() - Static Binding
-    derivedObj.show();    // Calls Derived::show() - Static Binding
-
     Base* basePtr = &derivedObj;
-    basePtr->show();      // Calls Base::show() - Static Binding (Base pointer)
+    basePtr->show();      // Calls Derived::show() - Dynamic Binding (Base pointer)
     
     return 0;
 }
