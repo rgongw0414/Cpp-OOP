@@ -1,6 +1,6 @@
 ## Polymorphism
 * If an instance sends a stimulus to another instance, but does not have to be aware of which class the receiving instance belongs to, we say that we have polymorphism.
-  * polymorphism/person.cpp
+  * [polymorphism/person.cpp](polymorphism/person.cpp)
 * Common Implementation
   * Pointer casting:
   ``` c++
@@ -37,10 +37,10 @@
   * Resolved in compile-time (static binding)
   * Overriding them in the derived class does not achieve polymorphic behavior
     * Upon calling the same function with a Derived object and a Base object, the output is the same, i.e., this is not polymorphic behavior.
-    * binding/non_v_func.cpp
+    * [binding/non_v_func.cpp](binding/non_v_func.cpp)
 * Virtual Destructor
   * Non-virtual destructor makes the destructor of the derived class not called, resulting in incomplete destruction.
 * Overriding Virtual Functions
   * Given an abstract class: Base, if the pure virtual function is not overriden in derived classes, the derived classes would become abstract, making it cannot be used to instantiate objects (except for virtual destructor, because the compiler generates a default destructor).
-  * binding/v_desturctor.cpp
-  * binding/not_overriding_vFunc.cpp
+  * [binding/v_desturctor.cpp](binding/v_desturctor.cpp)
+  * [binding/not_overriding_vFunc.cpp](binding/not_overriding_vFunc.cpp)
