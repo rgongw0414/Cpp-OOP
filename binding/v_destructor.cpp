@@ -7,7 +7,7 @@ public:
     }
     virtual ~Base() = 0; // Pure virtual destructor
 
-    // ~Base(); // non-virtual destructor, which makes the destructor of the derived class not called.
+    // ~Base(); // non-virtual destructor, which makes the destructor of the derived class not called, resulting in incomplete destruction.
     // By the statement: Base* basePtr = new Derived(); though use Base as the interface for Derived class, 
     // the destructor of the derived class is not called, which makes the interface incomplete.
 };
