@@ -44,3 +44,50 @@
   * Given an abstract class: Base, if the pure virtual function is not overriden in derived classes, the derived classes would become abstract, making it cannot be used to instantiate objects (except for virtual destructor, because the compiler generates a default destructor).
   * [binding/v_desturctor.cpp](binding/v_desturctor.cpp)
   * [binding/not_overriding_vFunc.cpp](binding/not_overriding_vFunc.cpp)
+### Virtual Table (vtable)
+* One of the most common methods to achieve polymorphism
+* __vptr is a hidden member
+  *  An pointer pointing to function pointers (virtual functions)
+  *  An array of function pointers
+  *  typedef void(*FuncPtr)();
+* Ecah objects has their own vtables, if there is at least one virtual function in the class
+  * [binding/v_table.cpp](binding/v_table.cpp)
+* Given class Base and Derived:
+``` cpp
+class Base
+{
+public:
+    virtual void function1() {}
+    virtual void function2() {}
+    void function3() {}
+};
+ 
+class Derived: public Base
+{
+public:
+    virtual void function1() {}
+};
+
+int main()
+{
+    Derived d1;
+    Base *d1_basePtr = &d1; // view d1 as Base
+}
+```
+* For Base, the __vptr looks like:
+``` cpp
+struct __vptr {
+	void (*function1)();
+	void (*function2)();
+}
+```
+* As for Derived:
+  * For each entry, it will be the "most-derived" version of function
+``` cpp
+struct D1_vptr {
+	function1 = Derived_function1;
+	function2 = Base_function2;
+}
+```
+* For d1_basePtr, it is a Derived obj being viewed as Base
+* Derived is derived from Base, so __vptr can still access the right functions
