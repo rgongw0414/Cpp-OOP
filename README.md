@@ -1,11 +1,11 @@
 # Big Picture of Polymorphism
-### Targets
+## Targets
 * Polymorphism (Target):
   * Dynamic Binding (Means of polymorphism)
   * vtable (Means of dynamic binding)
 
 Polymorphism is the goal. To accomplish it, the concept of dynamic binding comes into help. Among the implementations of dynamic binding, vtable is one of the most common options adopted.
-### Means
+## Means
 * Dynamic Binding (Means):
 
 Dynamic binding is the mechanism that achieves polymorphism. **It ensures that the correct function is called for an object, based on its runtime type rather than its compile-time type**. Dynamic binding is accomplished through the use of virtual functions and vtables.
@@ -14,7 +14,7 @@ Dynamic binding is the mechanism that achieves polymorphism. **It ensures that t
 
 The vtable (virtual table) is a data structure used to implement dynamic binding. The vtable holds pointers to the virtual functions of a class. When a virtual function is called on an object, **the runtime system looks up the function pointer in the vtable to determine the correct function to execute**.
 
-### Relationships
+## Relationships
 Polymorphism -> Dynamic Binding -> vtable (virtual functions)
 
 * Polymorphism:
