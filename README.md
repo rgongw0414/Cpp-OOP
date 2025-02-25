@@ -5,8 +5,16 @@
   * vtable (Means of dynamic binding)
 
 Polymorphism is the goal. To accomplish it, the concept of dynamic binding comes into help. Among the implementations of dynamic binding, vtable is one of the most common options adopted.
-### Relationships
+### Means
+* Dynamic Binding (Means):
 
+Dynamic binding is the mechanism that achieves polymorphism. **It ensures that the correct function is called for an object, based on its runtime type rather than its compile-time type**. Dynamic binding is accomplished through the use of virtual functions and vtables.
+
+* vtable (Means):
+
+The vtable (virtual table) is a data structure used to implement dynamic binding. The vtable holds pointers to the virtual functions of a class. When a virtual function is called on an object, **the runtime system looks up the function pointer in the vtable to determine the correct function to execute**.
+
+### Relationships
 Polymorphism -> Dynamic Binding -> vtable (virtual functions)
 
 * Polymorphism:
@@ -24,16 +32,6 @@ Polymorphism -> Dynamic Binding -> vtable (virtual functions)
   * Implementation: Stores pointers to virtual functions for a class.
 
   * Purpose: Supports dynamic binding by providing a way to look up the correct function to call at runtime.
-
-### Means
-* Dynamic Binding (Means):
-
-Dynamic binding is the mechanism that achieves polymorphism. **It ensures that the correct function is called for an object, based on its runtime type rather than its compile-time type**. Dynamic binding is accomplished through the use of virtual functions and vtables.
-
-* vtable (Means):
-
-The vtable (virtual table) is a data structure used to implement dynamic binding. The vtable holds pointers to the virtual functions of a class. When a virtual function is called on an object, **the runtime system looks up the function pointer in the vtable to determine the correct function to execute**.
-
 
 # Polymorphism
 * If an instance sends a stimulus to another instance, but does not have to be aware of which class the receiving instance belongs to, we say that we have polymorphism.
