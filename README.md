@@ -1,6 +1,46 @@
+# Big Picture of Polymorphism
+### Targets
+* Polymorphism (Target):
+  * Dynamic Binding (Means of polymorphism)
+  * vtable (Means of dynamic binding)
+
+Polymorphism is the goal. To accomplish it, the concept of dynamic binding comes into help. Among the implementations of dynamic binding, vtable is one of the most common options adopted.
+### Relationships
+
+Polymorphism -> Dynamic Binding -> vtable (virtual functions)
+
+* Polymorphism:
+
+  * Goal: Enable objects of different derived classes to be treated as objects of a common base class, allowing for flexible and reusable code.
+
+* Dynamic Binding:
+
+  * Mechanism: Ensure that the correct virtual function is called based on the runtime type of the object.
+
+  * How: Uses the vtable to achieve runtime function resolution.
+
+* vtable:
+
+  * Implementation: Stores pointers to virtual functions for a class.
+
+  * Purpose: Supports dynamic binding by providing a way to look up the correct function to call at runtime.
+
+### Means
+* Dynamic Binding (Means):
+
+Dynamic binding is the mechanism that achieves polymorphism. **It ensures that the correct function is called for an object, based on its runtime type rather than its compile-time type**. Dynamic binding is accomplished through the use of virtual functions and vtables.
+
+* vtable (Means):
+
+The vtable (virtual table) is a data structure used to implement dynamic binding. The vtable holds pointers to the virtual functions of a class. When a virtual function is called on an object, **the runtime system looks up the function pointer in the vtable to determine the correct function to execute**.
+
+
 # Polymorphism
 * If an instance sends a stimulus to another instance, but does not have to be aware of which class the receiving instance belongs to, we say that we have polymorphism.
 * Polymorphism is saying that the behavior of an object in response to an event (function call) is determined by the object itself
+* **It allows objects of different classes to be treated as objects of a common base class**
+* **Polymorphism enables functions to use objects of different types through a uniform interface (Base), providing flexibility and reusability in code.**
+* For every inherited virtual functions, they are not resolved until they are called
 * To achieve Polymorphism in C++, one can coordinate virtual functions, and class inheritance, etc.
   * [polymorphism/person.cpp](polymorphism/person.cpp)
   ``` c++
@@ -97,7 +137,7 @@
 * [C++中關於 virtual 的兩三事](https://medium.com/theskyisblue/c-中關於-virtual-的兩三事-1b4e2a2dc373)
 * [Why a pure virtual destructor needs an implementation](https://stackoverflow.com/questions/21109417/why-a-pure-virtual-destructor-needs-an-implementation)
 
-## Virtual Table (vtable)
+# Virtual Table (vtable)
 * One of the most common methods to achieve polymorphism
 * In many C++ implementations, the virtual table pointer is the first sizeof(void (**)()) bytes (4 or 8) of the object
 * When dereferencing the vtable pointer, you get the starting address of the virtual table: __vptr
