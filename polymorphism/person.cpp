@@ -12,20 +12,20 @@ using namespace std;
 
 class Person {
 public:
+    // virtual Person(const string name) : name(name) {} // Constructors cannot be virtual, whether Base or Derived or not, they all need a constructor to create an object.
     Person(const string name) : name(name) {}
     Person() : name("") {}
+    virtual ~Person() {} // virtual destructor is used to ensure that the derived class destructors are called properly.
 
-    virtual void introduce() {
-        cout << "I am a person" << endl;
-    }
-    virtual ~Person() {}
-    
+    // Pure function: Indicates that the derived classes must override this function, otherwise they cannot initiate objects.
+    virtual void greeting() = 0; // pure virtual function, which makes the class abstract and cannot be instantiated.
 
-    virtual void setName(const string& name) {
+    //  set/getName() are not virtual, because they are not intended to be overridden by the derived classes.
+    void setName(const string& name) {
         this->name = name;
     }
 
-    virtual string getName() const {
+    string getName() const {
         return name;
     }
 
@@ -35,97 +35,79 @@ protected:
 
 // The Student class is derived from the Person class and overrides the introduce() function to print a message identifying the object as a student.
 // The setName() and getName() functions are also overridden to call the base class implementations.
-class Student : public Person {
+class American : public Person {
 public:
-    Student(const string name) : Person(name) {}
-    Student() : Person() {}
-    void introduce() override {
+    American(const string name) : Person(name) {}
+    ~American() {}
+    void greeting() override {
         // override is to ensure that the function is intended to override a virtual function in the base class.
         // Also, if the interface of the base class' functions is not consistent with the derived class, the compiler will generate an error.
         // This helps to catch errors at compile time rather than runtime.
         // For further information, refer to the override.cpp file.
-        cout << "I am a student, my name is " << this->getName() << endl;
+        cout << "Nice to meet you! I am " << this->getName() << ". How's going?" << endl;
     }
-
-    void setName(const string& name) override {
-        Person::setName(name);
-    }
-    
-    string getName() const override {
-        return Person::getName();
-    }
-
-    ~Student() {}
 };
 
-// The Teacher class is derived from the Person class and overrides the introduce() function to print a message identifying the object as a teacher.
-// The setName() and getName() functions are also overridden to call the base class implementations.
-class Teacher : public Person {
+class Japanese : public Person {
 public:
-    Teacher(const string name) : Person(name) {}
-    Teacher() : Person() {}
-    void introduce() override {
-        cout << "I am a teacher, my name is " << this->getName() << endl;
+    Japanese(const string name) : Person(name) {} 
+    ~Japanese() {}
+    void greeting() override {
+        cout << "こんにちは" << endl; 
     }
+};
 
-    void setName(const string& name) override {
-        Person::setName(name);
+class Taiwanese : public Person {
+public:
+    Taiwanese(const string name) : Person(name) {} 
+    ~Taiwanese() {}
+    void greeting() override {
+        cout << "你好" << endl; 
     }
-    
-    string getName() const override {
-        return Person::getName();
-    }
-
-    ~Teacher() {}
 };
 
 int main() {
-    // Create instances of the Person, Student, and Teacher classes.
-    Person* person = new Person();
-    
     // By using the base class pointer as a interface b/w derived classes, we store derived class objects in the same container, which incorporates virtual functions to call the correct function at runtime.
     // This is called polymorphism.
     /* Casting derived ptrs to base ptrs and use virtual functions, why is this a good style?
     1. It provides a clear separation between the interface and implementation. 
     You can define a common interface in the base class and have different implementations in derived classes.  
     2. You can write code that works with base class pointers, and it will automatically handle any derived class object, making your code more flexible and extensible. */
-    Person* student = dynamic_cast<Person*>(new Student());
-    if (student == nullptr) { 
+    Person* american = dynamic_cast<Person*>(new American("John Doe"));
+    if (american == nullptr) { 
         // dynamic_cast is used to cast a pointer or reference to a derived class to a pointer or reference to a base class.
         // If the cast is successful, the dynamic_cast will return a pointer or reference to the base class.
         // If the cast fails, the dynamic_cast will return a nullptr.
         // dynamic_cast is also used for downcasting (casting from a base class to a derived class) and is safer than static_cast because it performs a runtime check to ensure that the cast is valid.
-        cout << "Failed to cast Student to Person" << endl;
-        throw std::runtime_error("Failed to cast Student to Person");
+        cout << "Failed to cast American to Person" << endl;
+        throw std::runtime_error("Failed to cast American to Person");
     }
-    Person* teacher = dynamic_cast<Person*>(new Teacher());
-    if (teacher == nullptr) {
-        cout << "Failed to cast Teacher to Person" << endl;
-        throw std::runtime_error("Failed to cast Teacher to Person");
+    Person* japanese = dynamic_cast<Person*>(new Japanese("鈴木太郎"));
+    if (japanese == nullptr) { 
+        // dynamic_cast is used to cast a pointer or reference to a derived class to a pointer or reference to a base class.
+        // If the cast is successful, the dynamic_cast will return a pointer or reference to the base class.
+        // If the cast fails, the dynamic_cast will return a nullptr.
+        // dynamic_cast is also used for downcasting (casting from a base class to a derived class) and is safer than static_cast because it performs a runtime check to ensure that the cast is valid.
+        cout << "Failed to cast Japanese to Person" << endl;
+        throw std::runtime_error("Failed to cast Japanese to Person");
+    }
+    Person* taiwanese = dynamic_cast<Person*>(new Taiwanese("陳太明"));
+    if (taiwanese == nullptr) {
+        cout << "Failed to cast Taiwanese to Person" << endl;
+        throw std::runtime_error("Failed to cast Taiwanese to Person");
     }
 
-    person->setName("Person");
-    student->setName("Student");
-    teacher->setName("Teacher");
-    // Call the introduce() function on each object to demonstrate polymorphism.
-    // For different objects, the introduce() function will print different messages based on the type of the object, which is determined at runtime.
-    person->introduce();
-    student->introduce();
-    teacher->introduce();
+    // Call the greeting() function on each object to demonstrate polymorphism.
+    // For different objects, the greeting() function will print different messages based on the type of the object, which is determined at runtime.
+    american->greeting();  // Output: Nice to meet you! I am John Doe. How's going?
+    japanese->greeting();  // Output: こんにちは
+    taiwanese->greeting(); // Output: 你好
 
-
-    cout << person->getName() << endl;
-    cout << student->getName() << endl;
-    cout << teacher->getName() << endl;
 
     // Clean up memory by deleting the objects.
-    delete person;
-    delete student;
-    delete teacher;
+    delete american;
+    delete japanese;
+    delete taiwanese;
     
-    Student* student1 = new Student("Eric");
-    student1->introduce();
-    delete student1;
-
     return 0;
 }

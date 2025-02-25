@@ -1,6 +1,53 @@
-## Polymorphism
+# Polymorphism
 * If an instance sends a stimulus to another instance, but does not have to be aware of which class the receiving instance belongs to, we say that we have polymorphism.
+* Polymorphism is saying that the behavior of an object in response to an event (function call) is determined by the object itself
+* To achieve Polymorphism in C++, one can coordinate virtual functions, and class inheritance, etc.
   * [polymorphism/person.cpp](polymorphism/person.cpp)
+  ``` c++
+  class Person {
+  public:
+      // ...
+      virtual ~Person() {} // ensure the derived class destructors are called properly.
+      // Pure virtual function: Indicates that the derived classes must override this function, otherwise they cannot initiate objects.
+      virtual void greeting() = 0; // makes the class abstract and cannot be instantiated.
+      // ...
+  }; 
+
+  class American : public Person {
+  public:
+      // ...
+      void greeting() override {
+          cout << "Nice to meet you! I am " << this->getName() << ". How's going?" << endl;
+      }
+  };
+
+  class Japanese : public Person {
+  public:
+      // ...
+      void greeting() override {
+          cout << "こんにちは" << endl; 
+      }
+  };
+
+  class Taiwanese : public Person {
+  public:
+      // ...
+      void greeting() override {
+          cout << "你好" << endl; 
+      }
+  };
+
+  int main() {
+    Person* american = dynamic_cast<Person*>(new American("John Doe"));
+    Person* japanese = dynamic_cast<Person*>(new Japanese("鈴木太郎"));
+    Person* taiwanese = dynamic_cast<Person*>(new Taiwanese("陳太明"));
+    // For each class, the function print different messages
+    american->greeting();  // Output: Nice to meet you! I am John Doe. How's going?
+    japanese->greeting();  // Output: こんにちは
+    taiwanese->greeting(); // Output: 你好
+    // ...
+  }
+  ```
 * Common Implementation
   * Pointer casting:
   ``` c++
@@ -23,32 +70,33 @@
       // ...
   };
   ```
-### Virtual Functions
-* Abstract Class
-  * At least one pure virtual function delared in class
-* Pure Virtual Function
-  * Force the derived classes to override the implementation of the pure virtual functions
-  * Message: For this function, only the interface is inherited. The implementation is left to be overriden in derived classes.
-* (Simple/Normal) Virtual Function
-  * Message: For this function, both the interface and the implementation are inherited, the derived classes can choose to either override it, or not to.
-  * If not overriden, the function inherited from Base will be called.
-* Non-virtual Function
-  * Message: Inherit the interface, and keep the implementation untouched (no overriding)
-  * Resolved in compile-time (static binding)
-  * Overriding them in the derived class does not achieve polymorphic behavior
-    * Upon calling the same function with a Derived object and a Base object, the output is the same, i.e., this is not polymorphic behavior.
-    * [binding/non_v_func.cpp](binding/non_v_func.cpp)
-* Virtual Destructor
-  * Non-virtual destructor makes the destructor of the derived class not called, resulting in incomplete destruction.
-* Overriding Virtual Functions
-  * Given an abstract class: Base, if the pure virtual function is not overriden in derived classes, the derived classes would become abstract, making it cannot be used to instantiate objects (except for virtual destructor, because the compiler generates a default destructor).
-  * [binding/v_desturctor.cpp](binding/v_desturctor.cpp)
-  * [binding/not_overriding_vFunc.cpp](binding/not_overriding_vFunc.cpp)
-* Refs
-  * [C++中關於 virtual 的兩三事](https://medium.com/theskyisblue/c-中關於-virtual-的兩三事-1b4e2a2dc373)
-  * [Why a pure virtual destructor needs an implementation](https://stackoverflow.com/questions/21109417/why-a-pure-virtual-destructor-needs-an-implementation)
+## Virtual Functions
+#### Abstract Class
+* At least one pure virtual function delared in class
+* Can't be used to initiate objects, can only be the ***interface*** to the derived classes
+#### Pure Virtual Function
+* Force the derived classes to override the implementation of the pure virtual functions
+* Message: For this function, only the interface is inherited. The implementation is left to be overriden in derived classes.
+#### (Simple/Normal) Virtual Function
+* Message: For this function, both the interface and the implementation are inherited, the derived classes can choose to either override it, or not to.
+* If not overriden, the function inherited from Base will be called.
+#### Non-virtual Function
+* Message: Inherit the interface, and keep the implementation untouched (no overriding)
+* Resolved in compile-time (static binding)
+* Overriding them in the derived class does not achieve polymorphic behavior
+  * Upon calling the same function with a Derived object and a Base object, the output is the same, i.e., this is not polymorphic behavior.
+  * [binding/non_v_func.cpp](binding/non_v_func.cpp)
+#### Virtual Destructor
+* Non-virtual destructor makes the destructor of the derived class not called, resulting in incomplete destruction.
+#### Overriding Virtual Functions
+* Given an abstract class: Base, if the pure virtual function is not overriden in derived classes, the derived classes would become abstract, making it cannot be used to instantiate objects (except for virtual destructor, because the compiler generates a default destructor).
+* [binding/v_desturctor.cpp](binding/v_desturctor.cpp)
+* [binding/not_overriding_vFunc.cpp](binding/not_overriding_vFunc.cpp)
+#### Refs:
+* [C++中關於 virtual 的兩三事](https://medium.com/theskyisblue/c-中關於-virtual-的兩三事-1b4e2a2dc373)
+* [Why a pure virtual destructor needs an implementation](https://stackoverflow.com/questions/21109417/why-a-pure-virtual-destructor-needs-an-implementation)
 
-### Virtual Table (vtable)
+## Virtual Table (vtable)
 * One of the most common methods to achieve polymorphism
 * In many C++ implementations, the virtual table pointer is the first sizeof(void (**)()) bytes (4 or 8) of the object
 * When dereferencing the vtable pointer, you get the starting address of the virtual table: __vptr
