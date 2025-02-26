@@ -110,7 +110,7 @@ Polymorphism -> Dynamic Binding -> vtable (virtual functions)
   };
   ```
 
-## Virtual Functions
+# Virtual Functions
 #### Abstract Class
 * At least one pure virtual function delared in class
 * Can't be used to initiate objects, can only be the ***interface*** to the derived classes
