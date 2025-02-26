@@ -155,42 +155,48 @@ Polymorphism -> Dynamic Binding -> vtable (virtual functions)
   * [binding/v_table.cpp](binding/v_table.cpp)
 * Given class Base and Derived:
 ``` cpp
-class Base
-{
+class Base {
 public:
-    virtual void function1() {}
-    virtual void function2() {}
-    void function3() {}
-};
- 
-class Derived: public Base
-{
-public:
-    virtual void function1() {}
+    virtual void show() { std::cout << "Base::show()\n"; }
+    virtual void display() { std::cout << "Base::display()\n"; }
+    int x = 100;
 };
 
-int main()
-{
-    Derived d1;
-    Base *d1_basePtr = &d1; // view d1 as Base
+class Derived : public Base {
+public:
+    void show() override { std::cout << "Derived::show()\n"; }
+    int y = 200;
+};
+
+int main() {
+    Derived d;
+    Base* ptr = &d; // ptr stores the address of d, but it can only access members of Base. It does not see any Derived-specific members (unless accessed through a proper cast).
+    void (**vt)() = *(void (***)())ptr;
+    ptr->show();    // Calls Derived::show() (resolved via vtable at runtime); equivalent to (*vt[0])()
+    ptr->display(); // Calls Base::display() (not overridden; resolved via vtable at runtime); equivalent to (*vt[1])()
 }
 ```
-* For Base, the __vptr looks like:
+* For Base, the __vptr can be illustrate as:
 ``` cpp
 struct __vptr {
-	void (*function1)();
-	void (*function2)();
+	void (*show)();
+	void (*display)();
 }
 ```
-* As for Derived:
-  * For each entry, it will be the "most-derived" version of function
+* As for Derived, each entry is the "most-derived" version of function:
 ``` cpp
-struct D1_vptr {
-	function1 = Derived_function1;
-	function2 = Base_function2;
+struct __vptr_ptr {
+	show = Derived_show;
+	display = Base_display;
 }
 ```
-* For d1_basePtr, it is a Derived obj being viewed as Base
+* Watch during debugging
+
+![watch vtable](./imgs/vtable.png) 
+
+* For ptr, it is a Derived obj being viewed as Base
+  * It can only access members of Base. It does not see any Derived-specific members (unless accessed through a proper cast).
+  * [binding/s_binding.cpp](binding/s_binding.cpp)
 * Derived is derived from Base, so __vptr can still access the right functions
 * Refs:
   * [C++ 內部如何實現多型](https://npes87184.github.io/2019-06-08-how-c++-achieve-polymorphism-internally/)
