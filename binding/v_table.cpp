@@ -34,7 +34,7 @@ typedef void(*FuncPtr)();  // function pointer type
 int main() {
     Derived derivedObj;
     Base* base_ptr = &derivedObj;
-    void** v_table_ptr = *reinterpret_cast<void***>(base_ptr);  // base_ptr is a ptr to the v_table, where v_table is a array of v_function pointers, so we have to dereference it to get the begining of the v_table.
+    void (**v_table_ptr)() = *reinterpret_cast<void(***)()>(base_ptr);  // base_ptr is a ptr to the v_table, where v_table is a array of v_function pointers, so we have to dereference it to get the begining of the v_table.
     cout << "v_table_ptr : " << v_table_ptr << endl;
     int i = 0;
     while (v_table_ptr[i] && i < 3) {

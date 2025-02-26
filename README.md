@@ -32,6 +32,8 @@ Polymorphism -> Dynamic Binding -> vtable (virtual functions)
   * Implementation: Stores pointers to virtual functions for a class.
 
   * Purpose: Supports dynamic binding by providing a way to look up the correct function to call at runtime.
+  * Common Practices of dynamic binding: [binding/d_binding.cpp](binding/d_binding.cpp)
+  * Under the hood of polymorphism function calls: [binding/v_table.cpp](binding/v_table.cpp)
 
 # Polymorphism
 * If an instance sends a stimulus to another instance, but does not have to be aware of which class the receiving instance belongs to, we say that we have polymorphism.
