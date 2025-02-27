@@ -208,23 +208,73 @@ struct __vptr_ptr {
   
 ## What Happens at Each Stage?
 
-<div style="display: flex; gap: 10px;">
-  <div style="flex: 1;">
+```c++
+class Base {
+public:
+    virtual void show() { std::cout << "Base::show()\n"; } // Virtual function
+    virtual void show2() { std::cout << "Base::show2()\n"; } // Virtual function
+    void nv_func() { std::cout << "Base::nv_func()\n"; } // Non-Virtual function
+};
+
+class Derived : public Base {
+public:
+    void show() override { std::cout << "Derived::show()\n"; } // Overriding function
+    void show2() override { std::cout << "Derived::show2()\n"; } // Overriding function
+};
+
+int main() {
+    Derived d;
+    Base* ptr = &d; // Upcasting
+    ptr->nv_func(); // Calls Base::nv_func() (static binding)
+    ptr->show();    // Calls Derived::show() dynamically
+    ptr->show2();   // Calls Derived::show() dynamically
+    return 0;
+}
+```
+
+### Dynamic Binding
+
+#### 1. Compilation Stage
+
+* Compile the functions for non-virtual/virtual functions
+* Creates a vtable for `Base` and `Derived`
+  ```cpp
+  Base vtable: [ Base::show() Base::show2() ]
+  Derived vtable: [ Derived::show() Derived::show2() ]
+  ```
+* For each object that contains virtual functions, place an hidden pointer `vptr` (which points to the `vtable`) in the begining of that object memory layout
   
-    ```python
+#### 2. Runtime Stage
 
-    # Code block 1
-    print("Hello, World!")
+* When `ptr->show();` executes:
+  * The program fetches the `vptr` from `d` (which points to `Derived`'s `vtable`).
+  * It looks up the correct function in the `vtable` (`Derived::show()`).
+  * Calls `Derived::show()` dynamically via function pointer.
+  ```assembly
+  mov     rax, QWORD PTR [rbp-8]  # Load ptr (dereference the address of d) into rax 
+  mov     rax, QWORD PTR [rax]    # Load vptr (vtable pointer from d) into rax
+  mov     rdx, QWORD PTR [rax]    # # Fetch the function pointer (Derived::show()) from vtable 
+  call    rdx                     # Call Derived::show()
+  ```
 
-    ```
-  </div>
-  <div style="flex: 1;">
-  
-    ```javascript
+### Static Binding
 
-    // Code block 2
-    console.log("Hello, World!");
+```assembly
+mov     rax, QWORD PTR [rbp-8]   # Load ptr (address of d) into rax
+mov     rdi, rax                 # Move ptr (this pointer) into rdi
+call    Base::nv_func()             # Direct function call to Base::nv_func()
+```
 
-    ```
-  </div>
-</div>
+* `call Base::nv_func()`
+  * Direct function call (static binding), i.e., jump right to the label `Base::nv_func():`
+  * The compiler knows at compile time that `Base::nv_func()` must be called, so no vtable lookup is needed.
+
+### Summary
+
+* Before the function jump, dynamic binding calls have to lookup the `vtable`, while static binding calls don't have to, because the compiler, at compile time, already knows `Base::func()` must be called, so no `vtable` lookup is needed.
+
+### Full Example Code
+
+![Assembly Code Example-1](imgs/assembly_v_func_1.png)
+
+![Assembly Code Example-2](imgs/assembly_v_func_2.png)
