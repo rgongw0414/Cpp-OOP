@@ -148,14 +148,14 @@ Polymorphism -> Dynamic Binding -> vtable (virtual functions)
 
 # Virtual Table (vtable)
 * One of the most common methods to achieve polymorphism
-* In many C++ implementations, the virtual table pointer is the first sizeof(void (**)()) bytes (4 or 8) of the object
-* When dereferencing the vtable pointer, you get the starting address of the virtual table: __vptr
-  * *vtable_ptr -> __vptr
-* __vptr is a hidden member
+* In many C++ implementations, the virtual table pointer is the first `sizeof(void (**)())` bytes (4 or 8) of the object
+* When dereferencing the vtable pointer, you get the starting address of the virtual table: `__vptr`
+  * `*vtable_ptr` -> `__vptr`
+* `__vptr` is a hidden member
   *  An pointer pointing to function pointers (virtual functions)
-  *  vtable __vptr is an array of function pointers, which is of type `void (*[])()`
+  *  vtable `__vptr` is an array of function pointers, which is of type `void (*[])()`
      *  Each entry is of type `void (*)()` (function pointer)
-     *  So we can do a little trick to access __vptr, which is by explicitly convert the obj address to `void (***)()` (a ptr to ptr to function ptrs) manually, then dereference it to get the ptr to function ptrs (array of ptrs).
+     *  So we can do a little trick to access `__vptr`, which is by explicitly convert the obj address to `void (***)()` (a ptr to ptr to function ptrs) manually, then dereference it to get the ptr to function ptrs (array of ptrs).
      ``` cpp
      Derived derivedObj;
      Base* base_ptr = &derivedObj;
@@ -187,9 +187,9 @@ int main() {
     ptr->display(); // Calls Base::display() (not overridden; resolved via vtable at runtime); equivalent to (*vt[1])()
 }
 ```
-* For Base, the __vptr can be illustrate as:
+* For Base, the `__vptr` can be illustrate as:
 ``` cpp
-struct __vptr {
+struct `__vptr` {
 	void (*show)();
 	void (*display)();
 }
@@ -208,7 +208,7 @@ struct __vptr_ptr {
 * For ptr, it is a Derived obj being viewed as Base
   * It can only access members of Base. It does not see any Derived-specific members (unless accessed through a proper cast).
   * [binding/s_binding.cpp](binding/s_binding.cpp)
-* Derived is derived from Base, so __vptr can still access the right functions
+* Derived is derived from Base, so `__vptr` can still access the right functions
 * Refs:
   * [C++ 內部如何實現多型](https://npes87184.github.io/2019-06-08-how-c++-achieve-polymorphism-internally/)
   * [stack overflow: A helper variable for virtual table in c++](https://stackoverflow.com/questions/18246016/void-vt-void-ptr-a-helper-variable-for-virtual-table-in-c)
@@ -251,17 +251,17 @@ int main() {
   Base vtable: [ Base::show() Base::show2() ]
   Derived vtable: [ Derived::show() Derived::show2() ]
   ```
-* For each object that contains virtual functions, place an hidden pointer `vptr` (which points to the `vtable`) in the begining of that object memory layout
+* For each object that contains virtual functions, place an hidden pointer `__vptr` (which points to the `vtable`) in the begining of that object memory layout
   
 ### 2. Runtime Stage
 
 * When `ptr->show();` executes:
-  * The program fetches the `vptr` from `d` (which points to `Derived`'s `vtable`).
+  * The program fetches the `__vptr` from `d` (which points to `Derived`'s `vtable`).
   * It looks up the correct function in the `vtable` (`Derived::show()`).
   * Calls `Derived::show()` dynamically via function pointer.
   ```assembly
   mov     rax, QWORD PTR [rbp-8]  # Load ptr (dereference the address of d) into rax 
-  mov     rax, QWORD PTR [rax]    # Load vptr (vtable pointer from d) into rax
+  mov     rax, QWORD PTR [rax]    # Load __vptr (vtable pointer from d) into rax
   mov     rdx, QWORD PTR [rax]    # # Fetch the function pointer (Derived::show()) from vtable 
   call    rdx                     # Call Derived::show()
   ```
@@ -280,9 +280,9 @@ call    Base::nv_func()             # Direct function call to Base::nv_func()
   
 ## Full Example Code
 
-  [binding/summary.cpp](binding/summary.cpp)
-  
-  [binding/summary.asm](binding/summary.asm)
+[binding/summary.cpp](binding/summary.cpp)
+
+[binding/summary.asm](binding/summary.asm)
   
 ![Assembly Code Example-1](imgs/assembly_v_func_1.png)
 
