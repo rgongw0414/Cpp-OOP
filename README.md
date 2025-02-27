@@ -218,6 +218,7 @@ struct __vptr_ptr {
 # What Happens at Each Stage?
 
 ```c++
+// binding/summary.cpp
 class Base {
 public:
     virtual void show() { std::cout << "Base::show()\n"; } // Virtual function
