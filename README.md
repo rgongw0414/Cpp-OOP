@@ -13,16 +13,55 @@
   * Dynamic Binding (Means of polymorphism)
   * vtable (Means of dynamic binding)
 
-Polymorphism is the goal. To accomplish it, the concept of dynamic binding comes into help. Among the implementations of dynamic binding, vtable is one of the most common options adopted.
+Polymorphism is the goal. To accomplish it, the concept of dynamic binding comes into help. Among the implementations of dynamic binding, vtable (virtual function) is one of the most common options adopted.
+
 ## Means
 * Dynamic Binding (Means):
 
-Dynamic binding is the mechanism that achieves polymorphism. **It ensures that the correct function is called for an object, based on its runtime type rather than its compile-time type**. Dynamic binding is accomplished through the use of virtual functions and vtables.
+Dynamic binding is one of the the mechanism that achieves polymorphism. **It ensures that the correct function is called for an object, based on its runtime type rather than its compile-time type**. In this repo, we focus on virtual functions and vtables to achieve the Dynamic binding of object function calls.
+
 
 * vtable (Means):
 
 The vtable (virtual table) is a data structure used to implement dynamic binding. The vtable holds pointers to the virtual functions of a class. When a virtual function is called on an object, **the runtime system looks up the function pointer in the vtable to determine the correct function to execute**.
 
+  * Other Means of dynamic binding function calls:
+    * Function Pointers:
+  
+      1. Unlike virtual functions, there’s no automatic vtable mechanism. 
+      
+      2. Binding happens at runtime because the function pointer can change.
+      ```cpp
+      #include <iostream>
+
+      void foo() { std::cout << "foo()\n"; }
+      void bar() { std::cout << "bar()\n"; }
+
+      int main() {
+          void (*funcPtr)() = foo;  // Assign function pointer
+          funcPtr();  // Calls foo()
+
+          funcPtr = bar;  // Change function dynamically
+          funcPtr();  // Calls bar()
+      }
+      ```
+
+    * Lambda functions
+
+      1. Capturing lambdas store variables dynamically using heap allocations. This allows function behavior to change at runtime.
+
+      2. Even though lambda looks like a normal function, it captures variables dynamically
+      ```cpp
+      #include <iostream>
+      #include <functional>
+
+      int main() {
+          int x = 10;
+          auto lambda = [x]() { std::cout << "Captured x: " << x << "\n"; };
+          lambda();
+      }
+      ```
+      
 ## Relationships
 Polymorphism -> Dynamic Binding -> vtable (virtual functions)
 
