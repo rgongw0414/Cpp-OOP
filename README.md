@@ -205,3 +205,26 @@ struct __vptr_ptr {
   * [stack overflow: A helper variable for virtual table in c++](https://stackoverflow.com/questions/18246016/void-vt-void-ptr-a-helper-variable-for-virtual-table-in-c)
   * [Code Project: Displaying vtable when debugging](https://www.codeproject.com/Tips/90875/Displaying-vtable-when-debugging)
   * [Learn C++: 25.6 — The virtual table](https://www.learncpp.com/cpp-tutorial/the-virtual-table/)
+  
+## What Happens at Each Stage?
+
+<div style="display: flex; gap: 10px;">
+  <div style="flex: 1;">
+  
+    ```python
+
+    # Code block 1
+    print("Hello, World!")
+
+    ```
+  </div>
+  <div style="flex: 1;">
+  
+    ```javascript
+
+    // Code block 2
+    console.log("Hello, World!");
+
+    ```
+  </div>
+</div>
