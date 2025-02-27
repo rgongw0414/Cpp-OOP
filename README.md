@@ -1,4 +1,13 @@
-# Big Picture of Polymorphism
+# Contents
+
+1. [Big Picture of Polymorphism](#big-picture-of-polymorphism)
+2. [Polymorphism](#polymorphism)
+3. [Virtual Functions](#virtual-functions)
+4. [Virtual Tables (vtable)](#virtual-table-vtable)
+5. [What Happens at Compile-time & Runtime?](#what-happens-at-each-stage)
+6. [Summary](#summary)
+
+# Big Picture of Polymorphism 
 ## Targets
 * Polymorphism (Target):
   * Dynamic Binding (Means of polymorphism)
@@ -206,7 +215,7 @@ struct __vptr_ptr {
   * [Code Project: Displaying vtable when debugging](https://www.codeproject.com/Tips/90875/Displaying-vtable-when-debugging)
   * [Learn C++: 25.6 — The virtual table](https://www.learncpp.com/cpp-tutorial/the-virtual-table/)
   
-## What Happens at Each Stage?
+# What Happens at Each Stage?
 
 ```c++
 class Base {
@@ -232,9 +241,9 @@ int main() {
 }
 ```
 
-### Dynamic Binding
+## Dynamic Binding
 
-#### 1. Compilation Stage
+### 1. Compilation Stage
 
 * Compile the functions for non-virtual/virtual functions
 * Creates a vtable for `Base` and `Derived`
@@ -244,7 +253,7 @@ int main() {
   ```
 * For each object that contains virtual functions, place an hidden pointer `vptr` (which points to the `vtable`) in the begining of that object memory layout
   
-#### 2. Runtime Stage
+### 2. Runtime Stage
 
 * When `ptr->show();` executes:
   * The program fetches the `vptr` from `d` (which points to `Derived`'s `vtable`).
@@ -257,7 +266,7 @@ int main() {
   call    rdx                     # Call Derived::show()
   ```
 
-### Static Binding
+## Static Binding
 
 ```assembly
 mov     rax, QWORD PTR [rbp-8]   # Load ptr (address of d) into rax
@@ -268,13 +277,18 @@ call    Base::nv_func()             # Direct function call to Base::nv_func()
 * `call Base::nv_func()`
   * Direct function call (static binding), i.e., jump right to the label `Base::nv_func():`
   * The compiler knows at compile time that `Base::nv_func()` must be called, so no vtable lookup is needed.
+  
+## Full Example Code
 
-### Summary
-
-* Before the function jump, dynamic binding calls have to lookup the `vtable`, while static binding calls don't have to, because the compiler, at compile time, already knows `Base::func()` must be called, so no `vtable` lookup is needed.
-
-### Full Example Code
-
+  [binding/summary.cpp](binding/summary.cpp)
+  
+  [binding/summary.asm](binding/summary.asm)
+  
 ![Assembly Code Example-1](imgs/assembly_v_func_1.png)
 
 ![Assembly Code Example-2](imgs/assembly_v_func_2.png)
+
+# Summary
+
+Before the function jump, dynamic binding calls have to lookup the `vtable`, while static binding calls don't have to, because the compiler, at compile time, already knows `Base::func()` must be called, so no `vtable` lookup is needed.
+
