@@ -2,7 +2,7 @@ class Entity {
 public:
     int getX() const {
         m_getXCount_debug++;
-        return x;
+        return s_x;
     }
 
     int getDebugCount() const {
@@ -10,5 +10,5 @@ public:
     }
 private:
     mutable int m_getXCount_debug = 0; // mutable allows to modify a member in a const function
-    int x;
+    int s_x;
 };
