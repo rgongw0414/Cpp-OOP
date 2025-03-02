@@ -1,8 +1,8 @@
 
 ### Compiler
 * Preprocess (#include, #define, ...)
-  * ```#include <...>``` copy and paste the code
-  * ```#define A B``` replace A with B
+  * `#include <...>` copy and paste the code
+  * `#define A B` replace A with B
 * Compile cpp files into obj files (binary), which might not be executable, and needed to linked with other obj files to build the final executable
   
 
